@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/getx/auth_controller.dart';
 import 'package:workerkhojo_agent_panel/screens/profile/view_profile_screen.dart';
 
+import '../getx/btmnav_controller.dart';
+
 Widget drawerScreen() => Drawer(
       child: ListView(
         children: <Widget>[
@@ -24,7 +26,10 @@ Widget drawerScreen() => Drawer(
           ListTile(
             title: const Text('Profile'),
             onTap: () {
-              Get.to(const ViewProfileScreen());
+              BtmNavController().setSelectedIndex(0);
+              print(BtmNavController().selectedIndex);
+
+              Get.back();
             },
           ),
           ListTile(

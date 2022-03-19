@@ -11,3 +11,8 @@ Widget buildButton(context, text, color, width, onpressed) => SizedBox(
         ),
       ),
     );
+Widget iconButton(context, icon, color, onpressed) => SizedBox(
+      height: MediaQuery.of(context).size.height * 0.05,
+      width: MediaQuery.of(context).size.width * 0.2,
+      child: TextButton(onPressed: onpressed, child: icon),
+    );

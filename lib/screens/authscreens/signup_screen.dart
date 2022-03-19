@@ -46,11 +46,6 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                 ),
-                textfield(
-                    Icons.person_add_alt_1_outlined,
-                    'Referral Code/Optional',
-                    _controller.refercodeTextController,
-                    (value) => null),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                 ),

@@ -5,11 +5,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/screens/authscreens/otp_screen.dart';
 import 'package:workerkhojo_agent_panel/screens/authscreens/signup_screen.dart';
-import 'package:workerkhojo_agent_panel/screens/home_screen.dart';
+import 'package:workerkhojo_agent_panel/screens/btmnav.dart';
 import 'package:workerkhojo_agent_panel/screens/onboarding_screen.dart';
 import 'package:workerkhojo_agent_panel/widgets/toast.dart';
-
-import '../screens/profile/view_profile_screen.dart';
 
 class AuthController extends GetxController {
   var phoneFormKey = GlobalKey<FormState>();
@@ -20,7 +18,7 @@ class AuthController extends GetxController {
 
   TextEditingController fullnameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
-  TextEditingController refercodeTextController = TextEditingController();
+
   TextEditingController cityTextController = TextEditingController();
   TextEditingController otpTextController = TextEditingController();
 
@@ -116,13 +114,12 @@ class AuthController extends GetxController {
   createProfile() {
     try {
       _firestore
-          .collection('agents')
+          .collection('agents1')
           .doc(FirebaseAuth.instance.currentUser?.phoneNumber.toString())
           .set({
             'name': fullnameTextController.text.toString(),
             'email': emailTextController.text.toString(),
             'city': cityTextController.text.toString(),
-            'refercode': '+91${refercodeTextController.text.toString()}',
             'phone': FirebaseAuth.instance.currentUser?.phoneNumber.toString(),
           })
           .then((value) =>
@@ -145,13 +142,13 @@ class AuthController extends GetxController {
   getUserDetail() async {
     try {
       await _firestore
-          .collection('agents')
+          .collection('agents1')
           .doc('${FirebaseAuth.instance.currentUser?.phoneNumber}')
           .get()
           .then((value) => {
                 if (value.exists)
                   {
-                    Get.offAll(const HomeScreen()),
+                    Get.offAll(const BottomNav()),
                   }
                 else
                   {
