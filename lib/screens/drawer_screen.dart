@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/getx/auth_controller.dart';
-import 'package:workerkhojo_agent_panel/screens/profile/view_profile_screen.dart';
 
 import '../getx/btmnav_controller.dart';
+import 'my_workers.dart';
 
 Widget drawerScreen() => Drawer(
       child: ListView(
@@ -27,17 +27,14 @@ Widget drawerScreen() => Drawer(
             title: const Text('Profile'),
             onTap: () {
               BtmNavController().setSelectedIndex(0);
-              print(BtmNavController().selectedIndex);
 
               Get.back();
             },
           ),
           ListTile(
-            title: const Text('Item 2'),
+            title: const Text('My Workers'),
             onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
+              Get.to(const MyWorkersScreen());
             },
           ),
           ListTile(

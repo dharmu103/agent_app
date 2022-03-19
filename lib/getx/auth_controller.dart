@@ -1,8 +1,13 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:workerkhojo_agent_panel/models/agent_model.dart';
 import 'package:workerkhojo_agent_panel/screens/authscreens/otp_screen.dart';
 import 'package:workerkhojo_agent_panel/screens/authscreens/signup_screen.dart';
 import 'package:workerkhojo_agent_panel/screens/btmnav.dart';
@@ -12,13 +17,14 @@ import 'package:workerkhojo_agent_panel/widgets/toast.dart';
 class AuthController extends GetxController {
   var phoneFormKey = GlobalKey<FormState>();
   var signupFormKey = GlobalKey<FormState>();
+  final randomId = Random().nextInt(1000000);
 
   RxBool isverifing = false.obs;
   TextEditingController phoneTextController = TextEditingController();
 
   TextEditingController fullnameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
-
+  TextEditingController aadharnoTextController = TextEditingController();
   TextEditingController cityTextController = TextEditingController();
   TextEditingController otpTextController = TextEditingController();
 
@@ -27,7 +33,7 @@ class AuthController extends GetxController {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  static AgentModel agentModel = AgentModel();
   // this function is called when the agents clicks on the submit phone number button
   sendOtp() async {
     try {
@@ -115,10 +121,13 @@ class AuthController extends GetxController {
     try {
       _firestore
           .collection('agents1')
-          .doc(FirebaseAuth.instance.currentUser?.phoneNumber.toString())
+          .doc('Ag-${randomId}')
           .set({
+            'agentId': randomId.toString(),
             'name': fullnameTextController.text.toString(),
             'email': emailTextController.text.toString(),
+            'aadharno': aadharnoTextController.text.toString(),
+            'isVerified': false,
             'city': cityTextController.text.toString(),
             'phone': FirebaseAuth.instance.currentUser?.phoneNumber.toString(),
           })
@@ -143,12 +152,17 @@ class AuthController extends GetxController {
     try {
       await _firestore
           .collection('agents1')
-          .doc('${FirebaseAuth.instance.currentUser?.phoneNumber}')
+          .where('phone',
+              isEqualTo: FirebaseAuth.instance.currentUser?.phoneNumber)
+          .limit(1)
           .get()
           .then((value) => {
-                if (value.exists)
+                if (value.docs.isNotEmpty)
                   {
                     Get.offAll(const BottomNav()),
+                    storage.write(
+                        key: 'agentId',
+                        value: value.docs.first.data()['agentId'].toString()),
                   }
                 else
                   {
@@ -171,5 +185,21 @@ class AuthController extends GetxController {
     } catch (e) {
       toast(e, Colors.red);
     }
+  }
+
+  randomAlphaNumeric(int i) {
+    var rng = Random();
+    var n = rng.nextInt(i);
+    var n1 = rng.nextInt(i);
+    var n2 = rng.nextInt(i);
+    var n3 = rng.nextInt(i);
+    var n4 = rng.nextInt(i);
+    var n5 = rng.nextInt(i);
+    var n6 = rng.nextInt(i);
+    var n7 = rng.nextInt(i);
+    var n8 = rng.nextInt(i);
+    var n9 = rng.nextInt(i);
+    var n10 = rng.nextInt(i);
+    return '${n}${n1}${n2}${n3}${n4}${n5}${n6}${n7}${n8}${n9}${n10}';
   }
 }

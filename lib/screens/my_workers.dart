@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/getx/db_controller.dart';
-import 'package:workerkhojo_agent_panel/widgets/dialog_box.dart';
 
-import '../screens/add_worker_form.dart';
+import 'add_worker_form.dart';
 
-class BuildBottomSheet extends StatelessWidget {
-  const BuildBottomSheet({Key? key}) : super(key: key);
+class MyWorkersScreen extends StatelessWidget {
+  const MyWorkersScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _dbController = Get.put(DbController());
-    return BottomSheet(
-        onClosing: () {},
-        builder: (context) => Container(
-              height: Get.height * 0.5,
-              child: Column(
-                children: [
-                  const Text('Add Worker or Select from List'),
-                  ListTile(
-                    leading: const Icon(Icons.add),
-                    title: const Text('Add Worker'),
-                    onTap: () {
-                      Get.to(
-                        const AddWorkerForm(),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.05,
-                  ),
-                  Expanded(
-                      child: ListView.builder(
+    return Scaffold(
+        appBar: AppBar(),
+        body: Container(
+          height: Get.height,
+          child: Column(
+            children: [
+              const Text('Add Worker or Select from List'),
+              ListTile(
+                leading: const Icon(Icons.add),
+                title: const Text('Add Worker'),
+                onTap: () {
+                  Get.back();
+                  Get.to(const AddWorkerForm());
+                },
+              ),
+              SizedBox(
+                height: Get.height * 0.05,
+              ),
+              Expanded(
+                  child: _dbController.workers.isEmpty
+                      ? const Center(
+                          child: Text('Please Add Workers'),
+                        )
+                      : ListView.builder(
                           itemCount: _dbController.workers.length,
                           itemBuilder: (context, index) {
                             return ListTile(
@@ -63,8 +65,8 @@ class BuildBottomSheet extends StatelessWidget {
                               },
                             );
                           }))
-                ],
-              ),
-            ));
+            ],
+          ),
+        ));
   }
 }

@@ -46,6 +46,13 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                 ),
+                textfield(
+                  Icons.location_on_outlined,
+                  'Aadharcard Number',
+                  _controller.aadharnoTextController,
+                  (value) =>
+                      value.length != 12 ? 'Aadhar number is incorrect' : null,
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.04,
                 ),

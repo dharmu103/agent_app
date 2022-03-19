@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:workerkhojo_agent_panel/getx/db_controller.dart';
 import 'package:workerkhojo_agent_panel/widgets/btmsheet.dart';
 import 'package:workerkhojo_agent_panel/widgets/button.dart';
 import 'package:workerkhojo_agent_panel/widgets/icons.dart';
 
-class JobProfileScreen extends StatelessWidget {
-  const JobProfileScreen({Key? key}) : super(key: key);
+class RequirementDetailScreen extends StatelessWidget {
+  const RequirementDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final arguments = Get.arguments;
+    final _controller = Get.put(DbController());
+    final index = Get.arguments;
     return Scaffold(
         appBar: AppBar(),
         body: Stack(children: [
@@ -23,14 +25,14 @@ class JobProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Baby Shitter',
+                  _controller.requirements[index].id.toString(),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w900,
                       fontSize: Get.width * 0.05),
                 ),
                 Text(
-                  'Byjusoft',
+                  '',
                   style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: Get.width * 0.05,
@@ -39,7 +41,7 @@ class JobProfileScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Navdeep Hudda  ',
+                      index.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: Get.width * 0.05,
@@ -71,7 +73,7 @@ class JobProfileScreen extends StatelessWidget {
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50))),
                 child: Text(
-                  arguments.toString(),
+                  " arguments.toString()",
                 ),
               ),
             ),
@@ -84,10 +86,7 @@ class JobProfileScreen extends StatelessWidget {
                 width: Get.width,
                 child:
                     buildButton(context, 'Apply', Colors.indigo, Get.width, () {
-                  Get.bottomSheet(BottomSheet(
-                    onClosing: () {},
-                    builder: (context) => BuildBottomSheet(),
-                  ));
+                  Get.bottomSheet(const BuildBottomSheet());
                 }),
               ))
         ]));

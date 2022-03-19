@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/getx/btmnav_controller.dart';
-import 'package:workerkhojo_agent_panel/screens/job_profile.dart';
+import 'package:workerkhojo_agent_panel/screens/requirement_detail_screen.dart';
 
 import 'drawer_screen.dart';
 import 'home_screen.dart';
@@ -15,7 +15,7 @@ class BottomNav extends StatelessWidget {
     final _btmnavController = Get.put(BtmNavController());
     List screen = [
       const HomeScreen(),
-      const JobProfileScreen(),
+      const HomeScreen(),
       const HomeScreen(),
       const ViewProfileScreen(),
     ];
