@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: 50,
             child: ListView(
               shrinkWrap: true,

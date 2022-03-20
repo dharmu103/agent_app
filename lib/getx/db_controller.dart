@@ -11,6 +11,7 @@ import '../widgets/toast.dart';
 class DbController extends GetxController {
   RxList<RequirementsModel> requirements = <RequirementsModel>[].obs;
   RxList<WorkerModel> workers = <WorkerModel>[].obs;
+  RxList<RequirementsModel> appliedjobs = <RequirementsModel>[].obs;
 
   final _firestore = FirebaseFirestore.instance;
 
@@ -24,22 +25,25 @@ class DbController extends GetxController {
   onInit() async {
     await getAllJobs();
     await getAllWorkers();
-    update();
+    await getAllappliedJobs();
+
     super.onInit();
   }
 
 // this function is getting all the jobs from the firestore database and storing it in the jobs list
   getAllJobs() async {
     isLoading.value = true;
-    await _firestore
+    _firestore
         .collection('requirements1')
         .where('applied', isEqualTo: false)
-        .get()
-        .then((value) {
+        .snapshots()
+        .listen((value) {
+      requirements.clear();
       for (var element in value.docs) {
         requirements.add(RequirementsModel.fromJson(element.data()));
       }
       isLoading.value = false;
+      update();
     });
   }
 
@@ -56,6 +60,7 @@ class DbController extends GetxController {
         for (var element in value.docs) {
           workers.add(WorkerModel.fromJson(element.data()));
         }
+        update();
       });
     }
   }
@@ -67,12 +72,52 @@ class DbController extends GetxController {
       _firestore.collection('requirements1').doc('req-$docid').update({
         'applied': true,
         'appliedBy': agentId,
-        'appliedWorker': workerId
+        'appliedWorkerId': workerId
       }).then((value) {
         isLoading.value = false;
+        toast('Job Applied', Colors.green);
       });
     } catch (e) {
       toast('Something went wrong', Colors.red);
+    }
+  }
+
+  void deleteWorker(workerId) {
+    isLoading2.value = true;
+    try {
+      _firestore
+          .collection('workers1')
+          .doc('wk-$workerId')
+          .delete()
+          .then((value) {
+        isLoading2.value = false;
+        toast('Worker Deleted', Colors.green);
+      });
+    } catch (e) {
+      toast('Something went wrong', Colors.red);
+    }
+  }
+
+  getAllappliedJobs() async {
+    isLoading.value = true;
+    var agentId = await storage.read(key: 'agentId');
+
+    if (agentId != null) {
+      _firestore
+          .collection('requirements1')
+          .where(
+            'appliedBy',
+            isEqualTo: agentId,
+          )
+          .snapshots()
+          .listen((value) {
+        appliedjobs.clear();
+        for (var element in value.docs) {
+          appliedjobs.add(RequirementsModel.fromJson(element.data()));
+        }
+        print(appliedjobs.length.toString());
+        update();
+      });
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/getx/btmnav_controller.dart';
+import 'package:workerkhojo_agent_panel/screens/applied_req_screen.dart';
+import 'package:workerkhojo_agent_panel/screens/my_workers.dart';
 import 'package:workerkhojo_agent_panel/screens/requirement_detail_screen.dart';
 
 import 'drawer_screen.dart';
@@ -15,8 +17,8 @@ class BottomNav extends StatelessWidget {
     final _btmnavController = Get.put(BtmNavController());
     List screen = [
       const HomeScreen(),
-      const HomeScreen(),
-      const HomeScreen(),
+      const MyWorkersScreen(),
+      const AppliedRequirements(),
       const ViewProfileScreen(),
     ];
     return Scaffold(
@@ -34,12 +36,12 @@ class BottomNav extends StatelessWidget {
               label: 'Workers',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
+              icon: Icon(Icons.people),
+              label: 'My Workers',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
+              icon: Icon(Icons.schedule),
+              label: 'Appointments',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

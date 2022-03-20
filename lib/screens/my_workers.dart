@@ -11,12 +11,14 @@ class MyWorkersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _dbController = Get.put(DbController());
     return Scaffold(
-        appBar: AppBar(),
-        body: Container(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text('My Workers'),
+        ),
+        body: SizedBox(
           height: Get.height,
           child: Column(
             children: [
-              const Text('Add Worker or Select from List'),
               ListTile(
                 leading: const Icon(Icons.add),
                 title: const Text('Add Worker'),
@@ -33,38 +35,33 @@ class MyWorkersScreen extends StatelessWidget {
                       ? const Center(
                           child: Text('Please Add Workers'),
                         )
-                      : ListView.builder(
-                          itemCount: _dbController.workers.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: const Icon(Icons.person),
-                              title: Text(
-                                  _dbController.workers[index].name.toString()),
-                              onTap: () {
-                                Get.back();
-                                Get.defaultDialog(
-                                    title:
-                                        '${_dbController.workers[index].name} is selected \n Do you Want to Apply For this Job?',
-                                    content: Text(_dbController
-                                        .workers[index].name
-                                        .toString()),
-                                    actions: [
-                                      ElevatedButton(
-                                        child: const Text('Cancel'),
-                                        onPressed: () {
-                                          Get.back();
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        child: const Text('OK'),
-                                        onPressed: () {
-                                          Get.back();
-                                        },
-                                      )
-                                    ]);
-                              },
-                            );
-                          }))
+                      : GetBuilder<DbController>(builder: (context) {
+                          return ListView.builder(
+                              itemCount: _dbController.workers.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  trailing: IconButton(
+                                      onPressed: () {
+                                        _dbController.deleteWorker(_dbController
+                                            .workers[index].workerId);
+                                      },
+                                      icon: const Icon(Icons.delete)),
+                                  leading: const Icon(Icons.person),
+                                  title: Text(_dbController.workers[index].name
+                                      .toString()),
+                                  onTap: () {
+                                    Get.back();
+                                    Get.defaultDialog(
+                                        title:
+                                            '${_dbController.workers[index].name} info',
+                                        content: Text(_dbController
+                                            .workers[index].name
+                                            .toString()),
+                                        actions: []);
+                                  },
+                                );
+                              });
+                        }))
             ],
           ),
         ));
