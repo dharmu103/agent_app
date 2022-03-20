@@ -42,8 +42,11 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                         onTap: () {
-                          Get.to(const RequirementDetailScreen(),
-                              arguments: index);
+                          Get.to(
+                            RequirementDetailScreen(
+                              requirmentindex: index,
+                            ),
+                          );
                         },
                         child: listTile(context));
                   });

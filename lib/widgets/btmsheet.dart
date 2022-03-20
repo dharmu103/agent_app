@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/getx/db_controller.dart';
-import 'package:workerkhojo_agent_panel/widgets/dialog_box.dart';
 
 import '../screens/add_worker_form.dart';
 
 class BuildBottomSheet extends StatelessWidget {
-  const BuildBottomSheet({Key? key}) : super(key: key);
-
+  const BuildBottomSheet({Key? key, required this.requirementId})
+      : super(key: key);
+  final requirementId;
   @override
   Widget build(BuildContext context) {
     final _dbController = Get.put(DbController());
     return BottomSheet(
         onClosing: () {},
-        builder: (context) => Container(
+        builder: (context) => SizedBox(
               height: Get.height * 0.5,
               child: Column(
                 children: [
@@ -56,7 +56,12 @@ class BuildBottomSheet extends StatelessWidget {
                                       ElevatedButton(
                                         child: const Text('OK'),
                                         onPressed: () {
-                                          Get.back();
+                                          _dbController.applyJob(
+                                              requirementId,
+                                              _dbController
+                                                  .workers[index].agentId,
+                                              _dbController
+                                                  .workers[index].workerId);
                                         },
                                       )
                                     ]);

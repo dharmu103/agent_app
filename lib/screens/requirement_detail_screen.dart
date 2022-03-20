@@ -6,12 +6,13 @@ import 'package:workerkhojo_agent_panel/widgets/button.dart';
 import 'package:workerkhojo_agent_panel/widgets/icons.dart';
 
 class RequirementDetailScreen extends StatelessWidget {
-  const RequirementDetailScreen({Key? key}) : super(key: key);
-
+  const RequirementDetailScreen({Key? key, required this.requirmentindex})
+      : super(key: key);
+  final int requirmentindex;
   @override
   Widget build(BuildContext context) {
     final _controller = Get.put(DbController());
-    final index = Get.arguments;
+
     return Scaffold(
         appBar: AppBar(),
         body: Stack(children: [
@@ -25,7 +26,7 @@ class RequirementDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _controller.requirements[index].id.toString(),
+                  _controller.requirements[requirmentindex].id.toString(),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w900,
@@ -41,7 +42,7 @@ class RequirementDetailScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      index.toString(),
+                      requirmentindex.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: Get.width * 0.05,
@@ -72,8 +73,8 @@ class RequirementDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50))),
-                child: Text(
-                  " arguments.toString()",
+                child: const Text(
+                  '',
                 ),
               ),
             ),
@@ -86,7 +87,12 @@ class RequirementDetailScreen extends StatelessWidget {
                 width: Get.width,
                 child:
                     buildButton(context, 'Apply', Colors.indigo, Get.width, () {
-                  Get.bottomSheet(const BuildBottomSheet());
+                  Get.bottomSheet(
+                    BuildBottomSheet(
+                      requirementId:
+                          _controller.requirements[requirmentindex].id,
+                    ),
+                  );
                 }),
               ))
         ]));

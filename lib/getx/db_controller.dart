@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:workerkhojo_agent_panel/models/requirements_model.dart';
 import 'package:workerkhojo_agent_panel/models/worker_detail_model.dart';
+
+import '../widgets/toast.dart';
 
 class DbController extends GetxController {
   RxList<RequirementsModel> requirements = <RequirementsModel>[].obs;
@@ -55,7 +58,21 @@ class DbController extends GetxController {
         }
       });
     }
+  }
 
 // // this function is called when the agents clicks on the apply  button
+  void applyJob(docid, agentId, workerId) {
+    isLoading.value = true;
+    try {
+      _firestore.collection('requirements1').doc('req-$docid').update({
+        'applied': true,
+        'appliedBy': agentId,
+        'appliedWorker': workerId
+      }).then((value) {
+        isLoading.value = false;
+      });
+    } catch (e) {
+      toast('Something went wrong', Colors.red);
+    }
   }
 }
